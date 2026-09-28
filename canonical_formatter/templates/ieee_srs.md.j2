@@ -1,0 +1,100 @@
+{% from "_macros.j2" import req_block %}
+# Software Requirements Specification
+
+**Project:** {{ project_name }}  
+**Version:** 1.0 | **Date:** {{ date }}  
+**Structure:** Based on ISO/IEC/IEEE 29148
+
+---
+
+## 1. Introduction
+
+### 1.1 Purpose
+{{ srs.purpose }}
+
+### 1.2 Scope
+{{ srs.scope }}
+
+### 1.3 Definitions, Acronyms and Abbreviations
+_To be completed by the document owner._
+
+### 1.4 Document Overview
+This document contains {{ functional | length }} functional and {{ nonfunctional | length }} non-functional requirements, {{ srs.use_cases | length }} use cases, and a requirements traceability matrix.
+
+> Acceptance criteria in this document were generated automatically. Values marked ASSUMED are proposals and must be confirmed before this document is baselined.
+
+## 2. Overall Description
+
+### 2.1 Product Functions
+{% for r in functional %}
+- **{{ r.id }}** - {{ r.title }}
+{% endfor %}
+
+### 2.2 Design and Implementation Constraints
+{% for c in srs.constraints %}
+- {{ c }}
+{% else %}
+_None identified._
+{% endfor %}
+
+### 2.3 Users and Actors
+{% for a in actors %}
+- {{ a }}
+{% endfor %}
+
+## 3. Specific Requirements
+
+### 3.1 Functional Requirements
+
+{% for r in functional %}
+{{ req_block(r) }}
+{% endfor %}
+
+### 3.2 Non-Functional Requirements
+
+{% for r in nonfunctional %}
+{{ req_block(r) }}
+{% else %}
+_No non-functional requirements were identified._
+{% endfor %}
+
+### 3.3 Use Cases
+
+{% for uc in srs.use_cases %}
+#### {{ uc.id }} - {{ uc.title }}
+
+- **Actor:** {{ uc.actor }}
+- **Related requirements:** {{ uc.related_requirement_ids | join(", ") }}
+
+**Preconditions**
+
+{% for p in uc.preconditions %}
+- {{ p }}
+{% endfor %}
+
+**Main flow**
+
+{% for step in uc.main_flow %}
+- {{ step }}
+{% endfor %}
+
+{% endfor %}
+## 4. Requirements Traceability Matrix
+
+| Requirement | Use cases |
+|---|---|
+{% for e in srs.traceability_matrix %}
+| {{ e.requirement_id }} | {{ e.use_case_ids | join(", ") or "-" }} |
+{% endfor %}
+
+## Appendix A. Validation Findings
+
+{% if issues %}
+| Requirement | Type | Finding |
+|---|---|---|
+{% for i in issues %}
+| {{ i.requirement_id }} | {{ i.issue_type.value }} | {{ i.description }} |
+{% endfor %}
+{% else %}
+No ambiguities, conflicts or missing information were detected.
+{% endif %}

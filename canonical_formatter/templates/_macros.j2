@@ -1,0 +1,27 @@
+{% macro req_block(r) %}
+#### {{ r.id }} - {{ r.title }}
+
+{{ r.description }}
+
+- **Type:** {{ r.type.value | replace("_", "-") }}
+- **Priority:** {{ r.priority.value | capitalize }}
+{% if r.dependencies %}
+- **Depends on:** {{ r.dependencies | join(", ") }}
+{% endif %}
+{% if r.source_span %}
+- **Source text:** "{{ r.source_span.raw_text }}"
+{% endif %}
+{% if r.acceptance_criteria %}
+
+**Acceptance criteria**
+
+{% for ac in r.acceptance_criteria %}
+{{ loop.index }}. {{ ac }}
+{% endfor %}
+{% endif %}
+{% if r.flagged_issues %}
+
+> **Open issues:** {{ r.flagged_issues | join(" ") }}
+{% endif %}
+
+{% endmacro %}

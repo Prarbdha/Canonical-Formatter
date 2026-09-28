@@ -1,0 +1,1 @@
+The system shall allow users to reset their password via email. The system shall send transactional emails using an SMTP service. Users must be able to log in with a username and password. The system shall lock an account after 5 failed login attempts.

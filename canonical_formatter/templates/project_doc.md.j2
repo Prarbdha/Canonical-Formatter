@@ -1,0 +1,61 @@
+# {{ project_name }} - Project Documentation
+
+_Last generated: {{ date }}_
+
+## 1. Overview
+
+{{ srs.purpose }}
+
+{{ srs.scope }}
+
+## 2. Stakeholders and Actors
+
+{% for a in actors %}
+- {{ a }}
+{% endfor %}
+
+## 3. Feature Backlog
+
+| ID | Feature | Priority | Depends on |
+|---|---|---|---|
+{% for r in functional %}
+| {{ r.id }} | {{ r.title }} | {{ r.priority.value | capitalize }} | {{ r.dependencies | join(", ") or "-" }} |
+{% endfor %}
+
+## 4. Quality Attributes
+
+| ID | Attribute | Priority |
+|---|---|---|
+{% for r in nonfunctional %}
+| {{ r.id }} | {{ r.title }} | {{ r.priority.value | capitalize }} |
+{% else %}
+| - | None specified | - |
+{% endfor %}
+
+## 5. User Workflows
+
+{% for uc in srs.use_cases %}
+### {{ uc.title }}
+
+Actor: {{ uc.actor }}
+
+{% for step in uc.main_flow %}
+- {{ step }}
+{% endfor %}
+
+{% endfor %}
+## 6. Technical Constraints
+
+{% for c in srs.constraints %}
+- {{ c }}
+{% else %}
+_None identified._
+{% endfor %}
+
+## 7. Risks and Open Questions
+
+{% for i in issues %}
+- **{{ i.requirement_id }}** ({{ i.issue_type.value }}): {{ i.description }}
+{% else %}
+No open questions.
+{% endfor %}
